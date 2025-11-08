@@ -14,11 +14,11 @@ class LocationNotifier extends StateNotifier<LocationState> {
   final HiveService hiveService;
 
   Timer? timer;
-  bool isTracking = false;
-  int locationCount = 0;
+  bool isActive = false;
+  int countOfLocation = 0;
 
   Future<void> startGetLocation() async {
-    if (isTracking) return;
+    if (isActive) return;
 
     try {
       state = LocationLoading();
@@ -29,19 +29,19 @@ class LocationNotifier extends StateNotifier<LocationState> {
         return;
       }
 
-      isTracking = true;
+      isActive = true;
       bool isGettingLocation = false;
 
       timer = Timer.periodic(const Duration(seconds: 10), (timer) async {
-        if (!isTracking || isGettingLocation) return;
+        if (!isActive || isGettingLocation) return;
 
         isGettingLocation = true;
 
         try {
           final location = await locationService.getCurrentLocation();
-          locationCount++;
+          countOfLocation++;
 
-          await hiveService.saveLocation(location, locationCount);
+          await hiveService.saveLocation(location, countOfLocation);
 
           final currentList = await hiveService.getCurrentLocations();
           state = LocationSuccess(List.from(currentList));
@@ -57,7 +57,7 @@ class LocationNotifier extends StateNotifier<LocationState> {
   }
 
   void stopGetLocation() {
-    isTracking = false;
+    isActive = false;
     timer?.cancel();
     state = LocationSuccess([]);
   }
@@ -75,7 +75,7 @@ class LocationNotifier extends StateNotifier<LocationState> {
   Future<void> clearAllLocations() async {
     try {
       await hiveService.clearAll();
-      locationCount = 0;
+      countOfLocation = 0;
       state = LocationSuccess([]);
     } catch (e) {
       state = LocationError(e.toString());
