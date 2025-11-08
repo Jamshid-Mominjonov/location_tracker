@@ -38,6 +38,9 @@ class HomePage extends ConsumerWidget {
                   : state is LocationSuccess && state.locations.isEmpty
                   ? "No location"
                   : "",
+              style: TextStyle(
+                fontSize: 19
+              ),
             ),
             const SizedBox(height: 50),
             CustomButton(
