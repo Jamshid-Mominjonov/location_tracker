@@ -3,6 +3,11 @@ import 'package:geolocator/geolocator.dart';
 import '../models/locationModel.dart';
 
 class LocationService {
+  Future<bool> requestPermission() async {
+    final permission = await Geolocator.requestPermission();
+    return permission != LocationPermission.denied;
+  }
+
   Future<LocationModel> getCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition(
     );
@@ -21,10 +26,5 @@ class LocationService {
       "${place.locality ?? ''}, ${place.subLocality ?? ''}, ${place.subAdministrativeArea}",
       time: DateTime.now(),
     );
-  }
-
-  Future<bool> requestPermission() async {
-    final permission = await Geolocator.requestPermission();
-    return permission != LocationPermission.denied;
   }
 }
