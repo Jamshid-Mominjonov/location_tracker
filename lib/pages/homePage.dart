@@ -39,7 +39,7 @@ class HomePage extends ConsumerWidget {
                   ? "No location"
                   : "",
               style: TextStyle(
-                fontSize: 17
+                fontSize: 19
               ),
             ),
             const SizedBox(height: 50),
