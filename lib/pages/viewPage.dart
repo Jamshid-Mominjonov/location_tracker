@@ -48,7 +48,7 @@ class SavedLocationsPage extends ConsumerWidget {
           final dateFormat = DateFormat('dd MMM yyyy, HH:mm:ss ').format(loc.time.toLocal());
           return ListTile(
             title: Text(
-                style: TextStyle(fontSize: 19),
+                style: TextStyle(fontSize: 17),
                 "${loc.address}\n $dateFormat"),
 
           );
