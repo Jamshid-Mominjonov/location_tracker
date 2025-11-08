@@ -27,21 +27,16 @@ class HomePage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (state is LocationLoading)
-              const CircularProgressIndicator(),
+            if (state is LocationError) Text(state.message),
+            if (state is LocationLoading) const CircularProgressIndicator(),
             const SizedBox(height: 10),
-            Text(
-              state is LocationError
-                  ? state.message
-                  : state is LocationSuccess && state.locations.isNotEmpty
-                  ? "Address: ${state.locations.last.address}"
-                  : state is LocationSuccess && state.locations.isEmpty
-                  ? "No location"
-                  : "",
-              style: TextStyle(
-                fontSize: 19
+            if (state is LocationSuccess)
+              Text(
+                state.locations.isNotEmpty
+                    ? "Address: ${state.locations.last.address}"
+                    : "No location",
+                style: const TextStyle(fontSize: 19),
               ),
-            ),
             const SizedBox(height: 50),
             CustomButton(
               text: "START",
